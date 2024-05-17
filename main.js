@@ -1,5 +1,5 @@
 const fs = require('fs');
-const lexer = require('./Analisadores/lexer');
+const lexer = require('./Analisadores/lexico');
 
 const codigoFonte = fs.readFileSync('codigo.c', 'utf-8');
 
