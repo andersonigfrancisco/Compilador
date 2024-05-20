@@ -1,4 +1,4 @@
-const lexer = require('../Analisadores/lexer');
+const lexer = require('../Analisadores/lexico');
 
 describe('Analisador Lexico', () => {
 
