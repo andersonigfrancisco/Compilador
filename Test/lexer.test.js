@@ -1,29 +1,28 @@
-const lexer = require('../Analisadores/lexico');
+const lexer = require('../src/lexer/lexico');
+
+const input = `
+  #include <stdio.h>
+  #include <stdlib.h>
+
+  /*Codigo que soma dois numeros*/
+  int main() {
+    int num1 = 10;
+    int num2 = 20;
+    int sum = num1 + num2;
+
+    printf("A soma de %d e %d é %d\\n", num1, num2, sum);
+
+      return 0;
+    }
+`;
 
 describe('Analisador Lexico', () => {
-
-  const input = `
-      #include <stdio.h>
-      #include <stdlib.h>
-
-      /*Codigo que soma dois numeros*/
-      int main() {
-        int num1 = 10;
-        int num2 = 20;
-        int sum = num1 + num2;
-
-        printf("A soma de %d e %d é %d\\n", num1, num2, sum);
-
-        return 0;
-      }
-    `;
-
   beforeAll(()=>{
     console.log("")
     //console.log(lexer(input))
   })
 
-  it('deve analisar corretamente o código fonte', () => {
+  it('deve analisar corretamente o código fonte do arquivo codigo.ts', () => {
     
     const actualTokens = lexer(input);
 

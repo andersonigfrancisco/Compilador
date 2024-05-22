@@ -9,5 +9,8 @@ int main() {
 
   printf("A soma de %d e %d é %d\n", num1, num2, sum);
 
+  int x,y;
+  int soma = x*y;
+
   return 0;
 }
