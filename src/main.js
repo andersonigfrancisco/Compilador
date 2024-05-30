@@ -1,12 +1,11 @@
 const fs = require('fs');
 const lexer = require('./lexer/lexico');
 const Parser = require('./parser/parse');
+const generateASTYAML = require('./generateastyml');
 const codigoFonte = fs.readFileSync('../input.c', 'utf-8');
 
 const tokens = lexer(codigoFonte);
 
-const parser = new Parser(tokens);
-const ast = parser.parse();
 
 console.log("".padEnd(60), "Análise Léxica (Scanner) || (Gera Tokens)".padEnd(40), "\n")
 
@@ -18,3 +17,9 @@ tokens.forEach(token => {
 
 console.log("\n".padEnd(60), "Análise Sintática (Parser) || (Gera AST)".padEnd(40), "\n")
 
+const parser = new Parser(tokens);
+const ast = parser.parse();
+
+const astYAML = generateASTYAML(ast);
+
+fs.writeFileSync('../ast.yaml', astYAML);

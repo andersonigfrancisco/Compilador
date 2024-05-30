@@ -48,7 +48,7 @@ class Parser {
     }
     this.consume("PONTO_VIRGULA", "Expect ';' after variable declaration.");
     return { type: 'variable_declaration', varType: typeToken.value, name: nameToken.value, initializer };
-  }
+}
 
   block() {
     console.log("Entering block()");
@@ -117,7 +117,7 @@ class Parser {
     const value = this.expression();
     this.consume("PONTO_VIRGULA", "Expect ';' after expression.");
     return { type: 'expression_statement', identifier: identifierToken.value, value };
-}
+  }
 
 
   printStatement() {
@@ -152,28 +152,28 @@ class Parser {
     const value = this.expression();
     this.consume("PONTO_VIRGULA", "Expect ';' after return value.");
     return { type: 'return_statement', keyword: keyword.value, value };
-}
-ifStatement() {
-  this.consume("PALAVRA_RESERVADA", "Expect 'if'.");
-  this.consume("PARENTESES", "Expect '(' after 'if'.");
-  const condition = this.expression(); 
-  this.consume("PARENTESES", "Expect ')' after if condition.");
-  this.consume("CHAVES", "Expect '{' before if block.");
-  const thenBranch = this.block(); 
+  }
+  ifStatement() {
+    this.consume("PALAVRA_RESERVADA", "Expect 'if'.");
+    this.consume("PARENTESES", "Expect '(' after 'if'.");
+    const condition = this.expression();
+    this.consume("PARENTESES", "Expect ')' after if condition.");
+    this.consume("CHAVES", "Expect '{' before if block.");
+    const thenBranch = this.block();
 
-  let elseBranch = null;
-  if (this.match("PALAVRA_RESERVADA", "else")) {
+    let elseBranch = null;
+    if (this.match("PALAVRA_RESERVADA", "else")) {
       this.consume("CHAVES", "Expect '{' before else block.");
-      elseBranch = this.block(); 
+      elseBranch = this.block();
+    }
+
+    return { type: 'if_statement', condition, thenBranch, elseBranch };
   }
 
-  return { type: 'if_statement', condition, thenBranch, elseBranch };
-}
-
-elseStatement() {
-  this.consume("PALAVRA_RESERVADA", "Expect 'else'.");
-  return this.block();
-}
+  elseStatement() {
+    this.consume("PALAVRA_RESERVADA", "Expect 'else'.");
+    return this.block();
+  }
 
 
   forStatement() {
