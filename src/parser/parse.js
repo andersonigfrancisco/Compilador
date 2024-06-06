@@ -8,7 +8,7 @@ class Parser {
     const declarations = [];
     while (!this.isAtEnd()) {
       const token = this.peek();
-      console.log(`Parsing declaration at token index ${this.current}: ${JSON.stringify(token)}`);
+      console.log(`Parsing declaration at token index ${this.current}: ${JSON.stringify(token)} \n`);
       if (token.type === 'DIRECTIVA' || token.type === 'COMENTARIO') {
         this.advance();  // Ignora diretivas e comentários
       } else {
@@ -19,14 +19,14 @@ class Parser {
   }
 
   declaration() {
-    console.log("Inside declaration()");
-    console.log("Current token:", this.peek());
+    //console.log("Inside declaration()");
+    //console.log("Current token:", this.peek());
 
     const typeToken = this.consume("PALAVRA_RESERVADA", "Expect type specifier.");
-    console.log("Type token:", typeToken);
+    //console.log("Type token:", typeToken);
 
     const nameToken = this.consume("IDENTIFICADOR", "Expect identifier.");
-    console.log("Name token:", nameToken);
+    //console.log("Name token:", nameToken);
 
     if (nameToken.value === 'main') {
       // Process main function declaration
@@ -51,7 +51,7 @@ class Parser {
 }
 
   block() {
-    console.log("Entering block()");
+    console.log("Entering block()\n");
     const body = [];
     while (!this.check("CHAVES", "}")) {
       if (this.peek().type === 'PONTO_VIRGULA') {
@@ -68,7 +68,7 @@ class Parser {
 
   statement() {
     console.log("Entering statement()");
-    console.log("Current token in statement:", this.peek());
+    //console.log("Current token in statement:", this.peek());
 
     if (this.check("PALAVRA_RESERVADA", "int")) {
       return this.declaration();

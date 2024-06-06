@@ -5,20 +5,36 @@ TranslationUnit
                 └── CompoundStatement
                             ├── Declaration
                             │   ├── TypeSpecifier: int
-                            │   └── InitDeclarator: num1 = 
+                            │   └── InitDeclarator: num1 =         │   └── Number: 10
+
                             ├── Declaration
                             │   ├── TypeSpecifier: int
-                            │   └── InitDeclarator: num2 = 
+                            │   └── InitDeclarator: num2 =         │   └── Number: 20
+
                             ├── Declaration
                             │   ├── TypeSpecifier: int
-                            │   └── InitDeclarator: sum = 
-                            ├── Declaration
-                            │   ├── TypeSpecifier: int
-                            │   └── InitDeclarator: i
+                            │   └── InitDeclarator: sum =         │   ├── BinaryExpression: +
+                    │   └── Identifier: num1
+                    │   └── Identifier: num2
+
+                            ├── PrintStatement
                             └── IfStatement
-                                ├── Condition: 
+                                ├── Condition:         │   ├── BinaryExpression: >
+                    │   └── Identifier: sum
+                    │   └── Identifier: num2
+
                                         └── CompoundStatement
                                                     ├── ExpressionStatement
+                                                                │   ├── BinaryExpression: *
+                                                                            │   └── Identifier: sum
+                                                                            │   └── Identifier: num2
+                                                    ├── PrintStatement
                                 └── ElseStatement
                                         └── CompoundStatement
                                                     ├── ExpressionStatement
+                                                                │   ├── BinaryExpression: +
+                                                                            │   └── Identifier: num1
+                                                                            │   └── Identifier: num2
+                                                    ├── PrintStatement
+                            └── ReturnStatement
+                                        │   └── Number: 0
