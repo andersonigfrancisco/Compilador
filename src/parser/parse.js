@@ -99,9 +99,9 @@ class Parser {
     }
 
     if (this.check("IDENTIFICADOR")) { // Se for um identificador, pode ser uma expressão de atribuição
-      const token = this.peek();
+      // const token = this.peek();
       const nextToken = this.tokens[this.current + 1]; // Verifica o próximo token
-
+      
       if (nextToken && nextToken.type === "OPERADOR" && nextToken.value === "=") {
         // Se o próximo token for um operador de atribuição "=", então trata-se de uma expressão de atribuição
         return this.expressionStatement();
@@ -113,7 +113,7 @@ class Parser {
 
   expressionStatement() {
     const identifierToken = this.consume("IDENTIFICADOR", "Expect identifier.");
-    const operatorToken = this.consume("OPERADOR", "Expect '=' after identifier.");
+    // const operatorToken = this.consume("OPERADOR", "Expect '=' after identifier.");
     const value = this.expression();
     this.consume("PONTO_VIRGULA", "Expect ';' after expression.");
     return { type: 'expression_statement', identifier: identifierToken.value, value };
