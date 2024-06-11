@@ -12,8 +12,6 @@ class SemanticAnalyzer {
     return this.generatedCode;
   }
 
-  // Métodos de visita e outras funções aqui...
-
   generateExpression(node) {
     switch (node.type) {
       case 'NUMERO':
@@ -61,11 +59,8 @@ class SemanticAnalyzer {
         node.body.forEach(statement => this.visit(statement));
         this.exitScope();
         break;
-      // Adicione outros casos conforme necessário
     }
   }
-
-  // Outros métodos de visita e funções aqui...
 }
 
 module.exports = SemanticAnalyzer;
