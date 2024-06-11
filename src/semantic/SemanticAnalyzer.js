@@ -4,143 +4,68 @@ class SemanticAnalyzer {
     this.globalScope = new Map();
     this.currentScope = this.globalScope;
     this.scopeStack = [];
+    this.generatedCode = '';
   }
 
   analyze() {
     this.visit(this.ast);
+    return this.generatedCode;
   }
 
-  enterScope() {
-    this.scopeStack.push(this.currentScope);
-    this.currentScope = new Map();
-  }
+  // Métodos de visita e outras funções aqui...
 
-  exitScope() {
-    this.currentScope = this.scopeStack.pop();
-  }
-
-  visit(node) {
+  generateExpression(node) {
     switch (node.type) {
-      case 'program':
-        node.body.forEach(statement => this.visit(statement));
-        break;
-      case 'function_declaration':
-        this.visitFunctionDeclaration(node);
-        break;
+      case 'NUMERO':
+        return node.value;
+      case 'IDENTIFICADOR':
+        return node.value;
+      case 'binary_expression':
+        const left = this.generateExpression(node.left);
+        const right = this.generateExpression(node.right);
+        return `(${left} ${node.operator} ${right})`;
+      default:
+        throw new Error(`Unhandled node type: ${node.type}`);
+    }
+  }
+
+  generateStatement(node) {
+    switch (node.type) {
       case 'variable_declaration':
-        this.visitVariableDeclaration(node);
-        break;
-      case 'block':
-        this.visitBlock(node);
-        break;
-      case 'if_statement':
-        this.visitIfStatement(node);
-        break;
-      case 'return_statement':
-        this.visitReturnStatement(node);
+        this.generatedCode += `let ${node.name} = ${this.generateExpression(node.initializer)};\n`;
         break;
       case 'print_statement':
-        this.visitPrintStatement(node);
+        const args = node.args.map(arg => this.generateExpression(arg)).join(', ');
+        this.generatedCode += `console.log(${args});\n`;
         break;
-      case 'binary_expression':
-        this.visitBinaryExpression(node);
+      case 'if_statement':
+        const condition = this.generateExpression(node.condition);
+        this.generatedCode += `if (${condition}) {\n`;
+        node.thenBranch.body.forEach(statement => this.generateStatement(statement));
+        this.generatedCode += '} else {\n';
+        node.elseBranch.body.forEach(statement => this.generateStatement(statement));
+        this.generatedCode += '}\n';
         break;
-      case 'assignment':
-        this.visitAssignment(node);
-        break;
-      case 'identifier':
-        this.visitIdentifier(node);
-        break;
-      case 'number':
-        this.visitNumber(node);
+      case 'return_statement':
+        this.generatedCode += `return ${this.generateExpression(node.value)};\n`;
         break;
       default:
         throw new Error(`Unhandled node type: ${node.type}`);
     }
   }
 
-  visitFunctionDeclaration(node) {
-    const { name, parameters, body } = node;
-    if (this.currentScope.has(name)) {
-      throw new Error(`Function ${name} already declared.`);
-    }
-    this.currentScope.set(name, { type: 'function', parameters, body });
-
-    // Enter new scope for function body
-    this.enterScope();
-    parameters.forEach(param => {
-      this.currentScope.set(param.name, { type: param.type });
-    });
-    this.visit(body); // Note que visitamos `body` diretamente, não `body.body`
-    this.exitScope();
-  }
-
-  visitVariableDeclaration(node) {
-    const { name, varType, initializer } = node;
-    if (this.currentScope.has(name)) {
-      throw new Error(`Variable ${name} already declared.`);
-    }
-    this.currentScope.set(name, { type: varType });
-    if (initializer) {
-      this.visit(initializer);
-      this.checkTypeCompatibility(varType, initializer);
-    }
-  }
-  
-
-  visitBlock(node) {
-    this.enterScope();
-    node.body.forEach(statement => this.visit(statement));
-    this.exitScope();
-  }
-
-  visitIfStatement(node) {
-    this.visit(node.condition);
-    this.visit(node.thenBranch);
-    if (node.elseBranch) {
-      this.visit(node.elseBranch);
+  visit(node) {
+    switch (node.type) {
+      case 'block':
+        this.enterScope();
+        node.body.forEach(statement => this.visit(statement));
+        this.exitScope();
+        break;
+      // Adicione outros casos conforme necessário
     }
   }
 
-  visitReturnStatement(node) {
-    this.visit(node.value);
-  }
-
-  visitPrintStatement(node) {
-    node.args.forEach(arg => this.visit(arg));
-  }
-
-  visitBinaryExpression(node) {
-    this.visit(node.left);
-    this.visit(node.right);
-    // Aqui você pode adicionar verificações de tipo
-  }
-
-  visitAssignment(node) {
-    this.visit(node.value);
-    const varInfo = this.currentScope.get(node.name) || this.globalScope.get(node.name);
-    if (!varInfo) {
-      throw new Error(`Undeclared variable ${node.name}`);
-    }
-    this.checkTypeCompatibility(varInfo.type, node.value);
-  }
-
-  visitIdentifier(node) {
-    if (!this.currentScope.has(node.name) && !this.globalScope.has(node.name)) {
-      throw new Error(`Undeclared variable ${node.name}`);
-    }
-  }
-
-  visitNumber(node) {
-    // Números são sempre válidos como terminais
-  }
-
-  checkTypeCompatibility(expectedType, node) {
-    // Adicione lógica para verificar a compatibilidade de tipos
-    // Aqui você pode verificar se o tipo do node é compatível com expectedType
-  }
+  // Outros métodos de visita e funções aqui...
 }
-
-
 
 module.exports = SemanticAnalyzer;

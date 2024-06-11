@@ -4,6 +4,8 @@ const Parser = require('./parser/parse');
 const generateASTYAML = require('./generateastyml');
 const SemanticAnalyzer = require('./semantic/SemanticAnalyzer');
 
+const expandAST = require('./parser/expandAST');
+
 const colors = {
     lilas: '\x1b[35m',
     verde: '\x1b[32m',
@@ -38,11 +40,19 @@ fs.writeFileSync('./ast.yaml', astYAML);
 
 console.log("\n\n\n\n".padEnd(60), "Análise semântica".padEnd(40), "\n\n");
 
+
+
+  
+
+const asts = JSON.stringify(expandAST(ast.body[0].body), null, 2);
+
 // Análise semântica
-const semanticAnalyzer = new SemanticAnalyzer(ast);
+const semanticAnalyzer = new SemanticAnalyzer(asts);
 try {
     semanticAnalyzer.analyze();
     console.log('Semantic analysis completed successfully.');
 } catch (error) {
     console.error('Semantic error:', error.message);
 }
+
+console.log("\n\n\n\n")
