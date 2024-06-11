@@ -18,9 +18,9 @@ const input = `
 
 describe('Analisador Lexico', () => {
   beforeAll(()=>{
-    console.log("")
+    console.log("");
     //console.log(lexer(input))
-  })
+  });
 
   it('deve analisar corretamente o código fonte do arquivo codigo.ts', () => {
     

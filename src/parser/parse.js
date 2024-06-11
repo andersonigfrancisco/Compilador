@@ -15,6 +15,7 @@ class Parser {
         declarations.push(this.declaration());
       }
     }
+
     return { type: 'program', body: declarations };
   }
 

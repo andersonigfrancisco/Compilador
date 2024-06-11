@@ -40,10 +40,6 @@ fs.writeFileSync('./ast.yaml', astYAML);
 
 console.log("\n\n\n\n".padEnd(60), "Análise semântica".padEnd(40), "\n\n");
 
-
-
-  
-
 const asts = JSON.stringify(expandAST(ast.body[0].body), null, 2);
 
 // Análise semântica
